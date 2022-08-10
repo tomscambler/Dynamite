@@ -31,6 +31,7 @@ class Bot {
         return outputString;
     }
 
+
     makeMove(gamestate) {
         // weight previous moves more heavily but take into account all previous moves
         // after that, think about how and when to deploy the dynamite (after a certain number of draws, and taking into account the max number of dynamites useable)
@@ -51,34 +52,34 @@ class Bot {
 
         //else if it's not the first round:
         else{
-            let drawThreshold = 2;
+            let drawThreshold = 3;
 
             if(this.stringOfLastNMoves(4,this.p2PreviousOutput)==="DDDD"){
                 output = "W";
-                console.log(output);
             }
 
-            //if there have been enough draws - play dynamite
+            //if there have been enough consecutive draws - play dynamite
             else if (this.dynamiteCount<100 && this.numberOfConsecutiveDraws(gamestate)>=drawThreshold){
+                
                 rand = Math.random()*100
 
                 if (this.numberOfConsecutiveDraws(gamestate)===4){
                     output = "D";
+                    this.dynamiteCount++;
                 }
 
                 else if (rand > this.dynamiteCount){
                     output = "D";
+                    this.dynamiteCount++;
                 }
-
-                this.dynamiteCount++;
             }
-            //if there are enough draws, but no dynamite left
+
+            //if there are enough consecutive draws, but no dynamite left
             else if(this.dynamiteCount==0 && this.numberOfConsecutiveDraws(gamestate)>=drawThreshold){
                 output = "W";
             }
             
             if (!output){
-                //console.log("hi");
 
                 let p2LastMove = gamestate.rounds[this.roundCount-1].p2;
                 this.p2PreviousOutput.push(p2LastMove);
@@ -114,11 +115,16 @@ class Bot {
                 {
                     if (Math.random()<0.20){
                         output = "D";
+                        this.dynamiteCount++;
                     }
                 }
             }  
         }
         
+        // if (gamestate.rounds[gamestate.rounds.length-1].p1===this.whatBeats(gamestate.rounds[gamestate.rounds.length-1].p2)){
+        //     this.p1Score += this.numberOfConsecutiveDraws(gamestate);
+        // }
+
         this.roundCount++;
         this.p1PreviousOutput.push(output);
         return output;
