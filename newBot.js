@@ -11,8 +11,8 @@ class Bot {
             this.output =  ['P','R','S'][Math.floor(Math.random() * 3)];
         }
         else{
-            this.p2LastMove = gamestate.rounds[this.roundCount-1].p2;
-            this.p2PreviousOutput.push(this.p2LastMove);
+            let p2LastMove = gamestate.rounds[this.roundCount-1].p2;
+            this.p2PreviousOutput.push(p2LastMove);
             this.output = "R";
         }
 
