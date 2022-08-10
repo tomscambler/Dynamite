@@ -40,6 +40,7 @@ class Bot {
         let p2PaperPercent;
         let rand;
 
+        //if it's the first round
         if (gamestate.rounds.length === 0) {
             this.dynamiteCount = 0;
             this.roundCount = 0;
@@ -47,14 +48,18 @@ class Bot {
             this.p2PreviousOutput = [];
             output =  ['P','R','S'][Math.floor(Math.random() * 3)];
         }
+
+        //else if it's not the first round:
         else{
+            let drawThreshold = 2;
 
-
-
+            if(this.stringOfLastNMoves(4,this.p2PreviousOutput)==="DDDD"){
+                output = "W";
+                console.log(output);
+            }
 
             //if there have been enough draws - play dynamite
-            let drawThreshold = 2;
-            if (this.dynamiteCount<100 && this.numberOfConsecutiveDraws(gamestate)>=drawThreshold){
+            else if (this.dynamiteCount<100 && this.numberOfConsecutiveDraws(gamestate)>=drawThreshold){
                 rand = Math.random()*100
 
                 if (this.numberOfConsecutiveDraws(gamestate)===4){
@@ -98,7 +103,19 @@ class Bot {
                     toBeat = "P";
                 }
 
+                if (Math.random()<0.25){
+                    toBeat = this.whatBeats(toBeat);
+                }
+
                 output = this.whatBeats(toBeat);
+
+                //if we're getting close to the end, more likely to override dynamite
+                if (this.dynamiteCount<100 && this.roundCount>1500)
+                {
+                    if (Math.random()<0.20){
+                        output = "D";
+                    }
+                }
             }  
         }
         
