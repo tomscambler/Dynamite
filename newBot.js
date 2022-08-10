@@ -21,6 +21,16 @@ class Bot {
         return i-1;
     }
 
+    stringOfLastNMoves(n, p2PreviousOutput){
+        let outputString = "";
+        
+        for( let i=1; i<=Math.min(n, p2PreviousOutput.length); i++){
+            outputString += p2PreviousOutput[p2PreviousOutput.length-i];
+        }
+
+        return outputString;
+    }
+
     makeMove(gamestate) {
         // weight previous moves more heavily but take into account all previous moves
         // after that, think about how and when to deploy the dynamite (after a certain number of draws, and taking into account the max number of dynamites useable)
@@ -38,12 +48,20 @@ class Bot {
             output =  ['P','R','S'][Math.floor(Math.random() * 3)];
         }
         else{
+
+
+
+
             //if there have been enough draws - play dynamite
             let drawThreshold = 2;
             if (this.dynamiteCount<100 && this.numberOfConsecutiveDraws(gamestate)>=drawThreshold){
-                
                 rand = Math.random()*100
-                if (rand > this.dynamiteCount){
+
+                if (this.numberOfConsecutiveDraws(gamestate)===4){
+                    output = "D";
+                }
+
+                else if (rand > this.dynamiteCount){
                     output = "D";
                 }
 
@@ -84,7 +102,6 @@ class Bot {
             }  
         }
         
-        //console.log(output, this.dynamiteCount);
         this.roundCount++;
         this.p1PreviousOutput.push(output);
         return output;
