@@ -38,7 +38,6 @@ class Bot {
             output =  ['P','R','S'][Math.floor(Math.random() * 3)];
         }
         else{
-            //console.log(this.dynamiteCount);
             //if there have been enough draws - play dynamite
             let drawThreshold = 2;
             if (this.dynamiteCount<100 && this.numberOfConsecutiveDraws(gamestate)>=drawThreshold){
@@ -65,9 +64,7 @@ class Bot {
                 p2ScissorsPercent = this.p2PreviousOutput.filter(i=>i==="S").length/this.roundCount;
                 p2PaperPercent = this.p2PreviousOutput.filter(i=>i==="P").length/this.roundCount;
                 
-                let p2RPSTotal = p2RockPercent + p2ScissorsPercent + p2PaperPercent;
-
-                rand = Math.random() * p2RPSTotal;
+                rand = Math.random() * (p2RockPercent + p2ScissorsPercent + p2PaperPercent);
                 let toBeat;
 
                 if (rand<p2RockPercent)
