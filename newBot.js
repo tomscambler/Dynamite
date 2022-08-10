@@ -1,5 +1,6 @@
 class Bot {
     makeMove(gamestate) {
+        // hello Tom
 
         whatisthis = gamestate.rounds;
 
